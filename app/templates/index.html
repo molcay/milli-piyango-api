@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Unofficial Milli Piyango API</title>
+  <link rel="shortcut icon" href="../images/fav_icon.png" type="image/x-icon">
+  <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css'>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tabs.css') }}">
+  <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+</head>
+<body>
+<nav class="navbar is-info">
+  <div class="container">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="../">
+        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo">
+      </a>
+      <span class="navbar-burger burger" data-target="navbarMenu">
+          <span></span>
+          <span></span>
+          <span></span>
+      </span>
+    </div>
+    <div id="navbarMenu" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="tabs is-right">
+          <span class="navbar-item">
+            <a class="button is-white is-outlined"
+               href="https://github.com/molcay/milli-piyango-api" target="_blank">
+                <span class="icon">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span title="Hello from the other side">View Source</span>
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<section class="hero is-info">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        Milli Piyango API
+      </h1>
+      <h2 class="subtitle">
+        Unofficial
+      </h2>
+    </div>
+  </div>
+  <div class="tabs is-boxed is-centered main-menu" id="nav">
+    <ul>
+      <li data-target="pane-1" id="1" class="is-active">
+        <a>
+          <span class="icon is-small"><i class="fa fa-image"></i></span>
+          <span>Overview</span>
+        </a>
+      </li>
+      <li data-target="pane-2" id="2">
+        <a>
+          <span class="icon is-small"><i class="fab fa-superpowers"></i></span>
+          <span>Endpoints</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="tab-content">
+    <div class="tab-pane is-active" id="pane-1" class="level">
+      <article class="message is-link">
+        <div class="message-header">
+          <h1 class="title is-4">Description</h1>
+        </div>
+        <div class="message-body">
+          You can retrieve information about 5 different game (listed below) results from <a class="tag is-warning"
+                                                                                             href="http://www.mpi.gov.tr/">Milli
+          Piyango</a>.
+        </div>
+      </article>
+      <article class="message is-dark">
+        <div class="message-body">
+          <table class="table is-narrow">
+            {% for game in games %}
+              <tr>
+                <td>{{ game.name }}:</td>
+                <td><a class="tag is-warning" href="{{ game.specLink }}">Game Spec</a></td>
+                <td><a class="tag is-warning" href="{{ game.resultLink }}">Results</a></td>
+              </tr>
+            {% endfor %}
+          </table>
+        </div>
+      </article>
+      <article class="message is-link">
+        <div class="message-header">
+          <h1 class="title is-4">Usage</h1>
+        </div>
+        <div class="message-body">
+          This project come with a Dockerfile. You can deploy it anywhere you want(Google Cloud Platform, etc.) or simple use
+          it locally
+        </div>
+      </article>
+      <article class="message is-link">
+        <div class="message-header">
+          <h1 class="title is-4">Dependencies</h1>
+        </div>
+        <div class="message-body">
+          This project has couple of dependencies which are listed below.
+        </div>
+      </article>
+      <article class="message is-dark">
+        <div class="message-body">
+          <table class="table is-narrow">
+            <tr>
+              <td>Flask:</td>
+              <td>
+                <a class="tag is-warning" href="http://flask.pocoo.org/" target="_blank">Website</a>
+              </td>
+            </tr>
+            <tr>
+              <td>MilliPiyango:</td>
+              <td>
+                <a class="tag is-warning" href="https://github.com/molcay/milli-piyango/" target="_blank">Website</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </article>
+    </div>
+    <div class="tab-pane" id="pane-2">
+      <article class="message is-link">
+        <div class="message-header">
+          <h1 class="title is-4 is-black"><span class="tag is-light">GET</span> /api/v1/games</h1>
+        </div>
+        <div class="message-body">
+          <p>
+            This endpoint return the list of available games.
+          </p>
+          <hr>
+          <div class="columns">
+            <div class="column">
+              <h1>
+                <b>Sample Request</b>
+              </h1>
+              <pre>curl BASE_URL/api/v1/games</pre>
+            </div>
+            <div class="column">
+              <h1>
+                <b>Sample Response</b>
+              </h1>
+              <div class="content">
+            <pre>
+[
+  "piyango",
+  "sayisal",
+  "sanstopu",
+  "onnumara",
+  "superloto"
+]
+            </pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="message is-link">
+        <div class="message-header">
+          <h1 class="title is-4"><span class="tag is-light">GET</span> /api/v1/draw_dates/&lt;game&gt;</h1>
+        </div>
+        <div class="message-body">
+          <p>
+            This endpoint get a game name as game parameter in path and return drawing dates of given game.
+          </p>
+          <hr>
+          <div class="columns">
+            <div class="column">
+              <h1>
+                <b>Sample Request</b>
+              </h1>
+              <p>
+                If we pass "onnumara" as <span class="tag is-link">&lt;game&gt;</span> parameter, we get
+              </p>
+              <pre>curl BASE_URL/api/v1/draw_dates/onnumara</pre>
+            </div>
+            <div class="column">
+              <h1>
+                <b>Sample Response</b>
+              </h1>
+              <div class="content">
+            <pre>
+[
+  {
+    "tarih": "20180730",
+    "tarihView": "30-07-2018"
+  },
+  {
+    "tarih": "20180723",
+    "tarihView": "23-07-2018"
+  },
+  ...,
+  {
+    "tarih": "20020812",
+    "tarihView": "12-08-2002"
+  }
+]
+            </pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="message is-link">
+        <div class="message-header">
+          <h1 class="title is-4"><span class="tag is-light">GET</span> /api/v1/results/&lt;game&gt;/&lt;date&gt;</h1>
+        </div>
+        <div class="message-body">
+          <p>
+            This endpoint get a game name as game parameter and a date as date parameter in path and return result of given game in the specific day (given date).
+          </p>
+          <hr>
+          <div class="columns">
+            <div class="column">
+              <h1>
+                <b>Sample Request</b>
+              </h1>
+              <p>
+                If we pass "onnumara" as <span class="tag is-info">&lt;game&gt;</span> and "20180730" as <span class="tag is-info">&lt;date&gt;</span> parameter, we get
+              </p>
+              <pre>curl BASE_URL/api/v1/results/onnumara/20180730</pre>
+            </div>
+            <div class="column">
+              <h1>
+                <b>Sample Response</b>
+              </h1>
+              <div class="content">
+            <pre>
+{
+  "data": {
+    "bilenKisiler": [
+      {
+        "kisiBasinaDusenIkramiye": 3.2,
+        "kisiSayisi": 168809,
+        "oid": "3z8gnmjk8kx3jw05",
+        "tur": "$HIC"
+      },
+      ...
+    ],
+    "buyukIkrKazananIlIlceler": [
+      {
+        "il": "16",
+        "ilView": "BURSA",
+        "ilce": "01617",
+        "ilceView": "YILDIRIM"
+      },
+      ...
+    ],
+    "buyukIkramiye": 312783.11,
+    "buyukIkramiyeKazananIl": "",
+    "cekilisTarihi": "30/07/2018",
+    "cekilisTuru": "ON_NUMARA",
+    "devirSayisi": 0,
+    "devirTutari": 0.29,
+    "devretti": false,
+    "hafta": 834,
+    "haftayaDevredenTutar": 0.07,
+    "hasilat": 4633823.86,
+    "ikramiyeEH": 4170441.47,
+    "kdv": 830603.14,
+    "kibrisHasilati": 19362,
+    "kolonSayisi": 5464427,
+    "oid": "3zt6e8jk8kx3k000",
+    "rakamlar": "66#40#18#39#17#43#16#08#71#59#20#67#28#79#64#30#34#53#48#25#15#11",
+    "rakamlarNumaraSirasi": "08 - 11 - 15 - 16 - 17 - 18 - 20 - ...",
+    "sov": 463382.39,
+    "toplamHasilat": 5464427
+  },
+  "success": true
+}
+            </pre>
+          </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="message is-link">
+        <div class="message-header">
+          <h1 class="title is-4 is-black"><span class="tag is-light">GET</span> /api/v1/piyango/&lt;date&gt;/&lt;ticket_no&gt;</h1>
+        </div>
+        <div class="message-body">
+          <p>
+            This endpoint return an object that indicate whether given ticket no win the prize in drawing at the given date.
+          </p>
+          <hr>
+          <div class="columns">
+            <div class="column">
+              <h1>
+                <b>Sample Request</b>
+              </h1>
+              <p>
+                If we pass "20180729" as <span class="tag is-link">&lt;date&gt;</span> and, "179604" as <span class="tag is-link">&lt;ticket_no&gt;</span> parameter, we get
+              </p>
+              <pre>curl BASE_URL/api/v1/piyango/20180729/179604</pre>
+            </div>
+            <div class="column">
+              <h1>
+                <b>Sample Response</b>
+              </h1>
+              <div class="content">
+            <pre>
+{
+  "biletNo": "179604",
+  "ikramiye": 2500000,
+  "kacBildi": 6,
+  "kazandi": true,
+  "numara": "179604",
+  "tip": "$6_RAKAM"
+}
+            </pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+  <nav class="navbar is-fixed-bottom">
+
+  </nav>
+</section>
+<script src="{{ url_for('static', filename='js/bulma.js') }}"></script>
+<script src="{{ url_for('static', filename='js/tabs.js') }}"></script>
+</body>
+</html>
