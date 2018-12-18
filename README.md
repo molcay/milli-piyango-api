@@ -16,6 +16,30 @@ This project come with a Dockerfile. You can deploy it anywhere you want(Google 
 * [Flask](http://flask.pocoo.org/)
 * [MilliPiyango](https://github.com/molcay/milli-piyango/)
 
+### Usage:
+* clone this repository:
+```shell
+git clone https://github.com/molcay/milli-piyango-api 
+```
+
+* change directory to `milli-piyango-api`:
+```shell
+cd milli-piyango-api
+```
+
+* create virtual environment and install dependencies:
+```shell
+python3 -m venv myvenv # create virtual environment
+
+source myvenv/bin/activate # activate virtual environment
+
+pip install -r requirements.txt # install dependencies
+```
+
+* now, you can start application:
+```shell
+python app/main.py
+```
 
 ### Endpoints:
 
